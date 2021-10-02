@@ -1,0 +1,33 @@
+---
+- name: Ensure swarmpit data directory exist
+  become: true
+  file:
+    group: "{{ deploy_group }}"
+    owner: "{{ deploy_user }}"
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ deploy_dir }}"
+    - "{{ data_dir }}"
+
+- name: Copy files
+  become: true
+  template:
+    dest: "{{ deploy_dir }}/swarmpit.yml"
+    group: "{{ deploy_group }}"
+    owner: "{{ deploy_user }}"
+    src: "templates/swarmpit.yml.j2"
+  when: state == "started"
+
+- name: Start swarmpit services
+  command: docker stack deploy -c swarmpit.yml swarmpit
+  args:
+    chdir: "{{ deploy_dir }}"
+  when: state == "started"
+
+- name: Stop swarmpit services
+  command: docker stack rm swarmpit
+  args:
+    chdir: "{{ deploy_dir }}"
+  when: state == "stopped"

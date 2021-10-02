@@ -1,0 +1,126 @@
+version: "3.7"
+
+networks:
+  agent:
+    - "external=true"
+    - "name={{ network_agent }}"
+  private:
+    - "external=true"
+    - "name={{ network_private }}"
+  public:
+    - "external=true"
+    - "name={{ network_public }}"
+
+services:
+  agent:
+    deploy:
+      labels:
+        swarmpit.agent: 'true'
+      mode: global
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
+    environment:
+      DOCKER_API_VERSION: '1.35'
+    image: swarmpit/agent:latest
+    logging:
+      driver: json-file
+    networks:
+      - agent
+      - private
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  app:
+    deploy:
+      labels:
+        - "traefik.docker.network={{ network }}"
+        - "traefik.enable=true"
+        - "traefik.http.routers.swarmpit-app-http.entrypoints=web"
+        - "traefik.http.routers.swarmpit-app-http.middlewares: https-redirect"
+        - "traefik.http.routers.swarmpit-app-http.rule=Host(`{{ domain }}`)"
+        - "traefik.http.routers.swarmpit-app-https.entrypoints=websecure"
+        - "traefik.http.routers.swarmpit-app-https.rule=Host(`{{ domain }}`)"
+        - "traefik.http.routers.swarmpit-app-https.tls=true"
+        - "traefik.http.routers.swarmpit-app-https.tls.certresolver=le"
+        - "traefik.http.routers.swarmpit-app-https.tls.domains[0].main={{ domain }}"
+        - "traefik.http.services.swarmpit-app.loadbalancer.server.port=9080"
+      mode: replicated
+      placement:
+        constraints:
+          - "node.labels.swarmpit == true"
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    environment:
+      SWARMPIT_DB: http://couchdbdb:5984
+      SWARMPIT_INFLUXDB: http://influxdb:8086
+    image: swarmpit/swarmpit:latest
+    logging:
+      driver: json-file
+    networks:
+      - agent
+      - private
+      - public
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+  
+  couchdb:
+    deploy:
+      mode: replicated
+      placement:
+        constraints:
+          - "node.labels.swarmpit == true"
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 256M
+        reservations:
+          cpus: '0.15'
+          memory: 128M
+    image: couchdb:2.3.0
+    logging:
+      driver: json-file
+    networks:
+      - private
+    volumes:
+      - couchdb:/opt/couchdb/data
+
+  influxdb:
+    deploy:
+      mode: replicated
+      placement:
+        constraints:
+          - "node.labels.swarmpit == true"
+      resources:
+        limits:
+          cpus: '0.6'
+          memory: 512M
+        reservations:
+          cpus: '0.3'
+          memory: 128M
+    image: influxdb:1.7
+    logging:
+      driver: json-file
+    networks:
+      - private
+    volumes:
+      - influxdb:/var/lib/influxdb
+
+volumes:
+  couchdb:
+    driver: local-persist
+    driver_opts:
+      - mountpoint={{ data_dir }}/couchdb"
+  influxdb:
+    driver: local-persist
+    driver_opts:
+      - mountpoint={{ data_dir }}/influxdb"

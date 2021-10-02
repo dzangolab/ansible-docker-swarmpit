@@ -1,0 +1,10 @@
+data_dir: ./swarmit
+deploy_dir: /data
+deploy_group: root
+deploy_user: root
+
+network_agent: swarmpit_agent
+network_private: swarmpit_private
+network_public: swarmpit_public
+
+state: started
