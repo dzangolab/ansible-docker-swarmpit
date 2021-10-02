@@ -9,16 +9,35 @@ Requirements
 Role Variables
 --------------
 
-| Variable | Description | Default value |
-------------------------------------------
-| swarmpit__data_dir | Where to store swarmppit data | ./swarmpit |
-| swarmpit__deploy_dir | Where to deplloy the sarmpit stacl config file | ./swarmpit |
-| swarmpit__deploy_group | | root |
-| swarmpit__deploy_user | | root |
-| swarmpit__network_agent | | swarmpit_agent |
-| swarmpit__network_private | | swarmpit_private |
-| swarmpit__network_public | | swarmpit_public |
-| swarmpit__state | started or stopped | started |
+### `swarmpit__data_dir`
+
+Where to store swarmppit data
+Default value: ` ./swarmpit`
+
+### `swarmpit__deploy_dir`
+
+Where to deploy the swarmpit stack config file
+Default value: `./swarmpit`
+
+### `swarmpit__deploy_group`
+
+Default value: `root`
+
+### `swarmpit__deploy_user`
+
+Default value: `root`
+
+### `swarmpit__network_agent`
+
+### `swarmpit__network_private`
+
+### `swarmpit__network_public`
+
+### `swarmpit__state`
+
+`started` to start the swarmpit service; `stopped` to stop it.
+
+Default value: `started`
 
 Example Playbook
 ----------------
