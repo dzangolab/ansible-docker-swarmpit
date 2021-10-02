@@ -1,6 +1,6 @@
 galaxy_info:
-  role_name: docker-swarmpit
-  author: Olivier Pichon <op@dzango.com>
+  role_name: docker_swarmpit
+  author: dzangolab
   description: Installs [swarmpit](https://swarmpit.io/) server and agentas docker containers
   company: Dzango Technologies Limited
 
@@ -9,12 +9,12 @@ galaxy_info:
   min_ansible_version: 2.1
 
   platforms:
-  - name: Ubuntu
-    versions:
-    - all
-  - name: Debian
-    versions:
-    - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
 
   galaxy_tags:
     - docker

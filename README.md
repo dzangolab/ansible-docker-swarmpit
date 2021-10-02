@@ -1,7 +1,7 @@
-dzangolab.docker_portainer
+dzangolab.docker_swarmpit
 =========
 
-Installs portainer server and agentas docker containers.
+Installs swarmpit app and agents as docker containers.
 
 Requirements
 ------------
@@ -9,23 +9,27 @@ Requirements
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+| Variable | Description | Default value |
+------------------------------------------
+| swarmpit__data_dir | Where to store swarmppit data | ./swarmpit |
+| swarmpit__deploy_dir | Where to deplloy the sarmpit stacl config file | ./swarmpit |
+| swarmpit__deploy_group | | root |
+| swarmpit__deploy_user | | root |
+| swarmpit__network_agent | | swarmpit_agent |
+| swarmpit__network_private | | swarmpit_private |
+| swarmpit__network_public | | swarmpit_public |
+| swarmpit__state | started or stopped | started |
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - role: dzangolab.docker_portainer
+```yaml
+- hosts: servers
+  roles:
+    - role: dzangolab.docker_swarmpit
       vars:
         - state: started
+```
 
 License
 -------
@@ -35,4 +39,4 @@ MIT
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Dzango Technologies Limited

@@ -3,19 +3,19 @@ version: "3.7"
 networks:
   agent:
     - "external=true"
-    - "name={{ network_agent }}"
+    - "name={{ swarmpit__network_agent }}"
   private:
     - "external=true"
-    - "name={{ network_private }}"
+    - "name={{ swarmpit__network_private }}"
   public:
     - "external=true"
-    - "name={{ network_public }}"
+    - "name={{ swarmpit__network_public }}"
 
 services:
   agent:
     deploy:
       labels:
-        swarmpit.agent: 'true'
+        swarmpit.agent: true
       mode: global
       resources:
         limits:
@@ -38,17 +38,17 @@ services:
   app:
     deploy:
       labels:
-        - "traefik.docker.network={{ network }}"
+        - "traefik.docker.network={{ public }}"
         - "traefik.enable=true"
-        - "traefik.http.routers.swarmpit-app-http.entrypoints=web"
-        - "traefik.http.routers.swarmpit-app-http.middlewares: https-redirect"
-        - "traefik.http.routers.swarmpit-app-http.rule=Host(`{{ domain }}`)"
-        - "traefik.http.routers.swarmpit-app-https.entrypoints=websecure"
-        - "traefik.http.routers.swarmpit-app-https.rule=Host(`{{ domain }}`)"
-        - "traefik.http.routers.swarmpit-app-https.tls=true"
-        - "traefik.http.routers.swarmpit-app-https.tls.certresolver=le"
-        - "traefik.http.routers.swarmpit-app-https.tls.domains[0].main={{ domain }}"
-        - "traefik.http.services.swarmpit-app.loadbalancer.server.port=9080"
+        - "traefik.http.routers.swarmpit-http.entrypoints=web"
+        - "traefik.http.routers.swarmpit-http.middlewares: https-redirect"
+        - "traefik.http.routers.swarmpit-http.rule=Host(`{{ swarmpit__domain }}`)"
+        - "traefik.http.routers.swarmpit-https.entrypoints=websecure"
+        - "traefik.http.routers.swarmpit-https.rule=Host(`{{ swarmpit__domain }}`)"
+        - "traefik.http.routers.swarmpit-https.tls=true"
+        - "traefik.http.routers.swarmpit-https.tls.certresolver=le"
+        - "traefik.http.routers.swarmpit-https.tls.domains[0].main={{ swarmpit__domain }}"
+        - "traefik.http.services.swarmpit.loadbalancer.server.port=9080"
       mode: replicated
       placement:
         constraints:
@@ -119,8 +119,8 @@ volumes:
   couchdb:
     driver: local-persist
     driver_opts:
-      - mountpoint={{ data_dir }}/couchdb"
+      - mountpoint={{ swarmpit__data_dir }}/couchdb"
   influxdb:
     driver: local-persist
     driver_opts:
-      - mountpoint={{ data_dir }}/influxdb"
+      - mountpoint={{ swarmpit__data_dir }}/influxdb"
