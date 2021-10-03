@@ -38,7 +38,7 @@ services:
   app:
     deploy:
       labels:
-        - "traefik.docker.network={{ public }}"
+        - "traefik.docker.network=public"
         - "traefik.enable=true"
         - "traefik.http.routers.swarmpit-http.entrypoints=web"
         - "traefik.http.routers.swarmpit-http.middlewares: https-redirect"
