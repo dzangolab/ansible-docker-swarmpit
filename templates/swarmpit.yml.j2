@@ -2,20 +2,20 @@ version: "3.7"
 
 networks:
   agent:
-    - "external=true"
-    - "name={{ swarmpit__network_agent }}"
+    external: true
+    name: "{{ swarmpit__network_agent }}"
   private:
-    - "external=true"
-    - "name={{ swarmpit__network_private }}"
+    external: true
+    name: "{{ swarmpit__network_private }}"
   public:
-    - "external=true"
-    - "name={{ swarmpit__network_public }}"
+    external: true
+    name: "{{ swarmpit__network_public }}"
 
 services:
   agent:
     deploy:
       labels:
-        swarmpit.agent: true
+        swarmpit.agent: "true"
       mode: global
       resources:
         limits:
@@ -117,10 +117,6 @@ services:
 
 volumes:
   couchdb:
-    driver: local-persist
-    driver_opts:
-      - mountpoint={{ swarmpit__data_dir }}/couchdb"
+    driver: local
   influxdb:
-    driver: local-persist
-    driver_opts:
-      - mountpoint={{ swarmpit__data_dir }}/influxdb"
+    driver: local
