@@ -27,6 +27,8 @@ Default value: `root`
 
 Default value: `root`
 
+### `swarmpit__domain`
+
 ### `swarmpit__network_agent`
 
 ### `swarmpit__network_private`
