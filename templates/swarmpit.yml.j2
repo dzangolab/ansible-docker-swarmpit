@@ -48,7 +48,7 @@ services:
         - "traefik.http.routers.swarmpit-https.tls=true"
         - "traefik.http.routers.swarmpit-https.tls.certresolver=le"
         - "traefik.http.routers.swarmpit-https.tls.domains[0].main={{ swarmpit__domain }}"
-        - "traefik.http.services.swarmpit.loadbalancer.server.port=9080"
+        - "traefik.http.services.swarmpit.loadbalancer.server.port=8080"
       mode: replicated
       placement:
         constraints:
@@ -61,7 +61,7 @@ services:
           cpus: '0.25'
           memory: 512M
     environment:
-      SWARMPIT_DB: http://couchdbdb:5984
+      SWARMPIT_DB: http://couchdb:5984
       SWARMPIT_INFLUXDB: http://influxdb:8086
     image: swarmpit/swarmpit:latest
     logging:
