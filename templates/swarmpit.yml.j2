@@ -41,7 +41,7 @@ services:
         - "traefik.docker.network=public"
         - "traefik.enable=true"
         - "traefik.http.routers.swarmpit-http.entrypoints=web"
-        - "traefik.http.routers.swarmpit-http.middlewares: https-redirect"
+        - "traefik.http.routers.swarmpit-http.middlewares=https-redirect"
         - "traefik.http.routers.swarmpit-http.rule=Host(`{{ swarmpit__domain }}`)"
         - "traefik.http.routers.swarmpit-https.entrypoints=websecure"
         - "traefik.http.routers.swarmpit-https.rule=Host(`{{ swarmpit__domain }}`)"
